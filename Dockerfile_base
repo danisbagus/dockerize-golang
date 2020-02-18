@@ -1,0 +1,20 @@
+FROM ubuntu:16.04
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    wget \
+    ca-certificates \
+    git \
+	gcc 
+
+RUN wget https://storage.googleapis.com/golang/go1.13.8.linux-amd64.tar.gz
+
+RUN tar -C  /usr/local -xzf go1.13.8.linux-amd64.tar.gz
+
+RUN rm go1.13.8.linux-amd64.tar.gz
+
+ENV GOPATH /go
+
+ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+
+RUN rm -rf /var/lib/apt/lists/*
