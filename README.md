@@ -4,6 +4,10 @@
 
 Pull base image from [docker-hub](https://hub.docker.com/repository/docker/danisbagus/base-go)
 
+```
+docker push danisbagus/base-go:latest
+```
+
 Create `.env` file
 
 ```
