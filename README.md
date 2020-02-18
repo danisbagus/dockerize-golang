@@ -2,11 +2,7 @@
 
 ## Instalation
 
-Pull base image from docker-hub
-
-```
-[danisbagus/base-go](https://hub.docker.com/repository/docker/danisbagus/base-go)
-```
+Pull base image from [docker-hub](https://hub.docker.com/repository/docker/danisbagus/base-go)
 
 Create `.env` file
 
