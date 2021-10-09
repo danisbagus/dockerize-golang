@@ -2,7 +2,6 @@ package repo
 
 import (
 	"log"
-	"time"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -42,8 +41,6 @@ func (r TransactionRepo) FetchAll() ([]TransactionModel, error) {
 		log.Printf("Error while quering find all purchase transaction by merchant id " + err.Error())
 		return nil, err
 	}
-
-	time.Sleep(3 * time.Second)
 
 	return transactions, nil
 }
