@@ -1,29 +1,20 @@
-# Golang Appplication Using Docker
+# dockerize-golang
 
-## Instalation
+Golang Appplication Using Docker
+## Setup
 
-Pull base image from [docker-hub](https://hub.docker.com/repository/docker/danisbagus/base-go)
+Prepare necessary environemt by rename config.example to config.yml
 
-```
-docker push danisbagus/base-go:latest
-```
+Create golang app container
 
-Create `.env` file
-
-```
-cp .env.example .env
+```bash
+docker-compose up
 ```
 
-Build new image
+## Testing
 
-```
-docker build -t danisbagus/app-go .
-```
+Hit transactions API
 
-## Running App
-
-Create and run new container
-
-```
-./run.sh
+```bash
+curl --location --request GET 'http://localhost:{appPort}/api/transactions' --header 'Content-Type: application/json'
 ```
