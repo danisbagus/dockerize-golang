@@ -13,8 +13,6 @@ docker-compose up
 
 Hit transactions API
 
-Create golang app container
-
 ```bash
 curl --location --request GET 'http://localhost:8100/api/transactions' --header 'Content-Type: application/json'
 ```
