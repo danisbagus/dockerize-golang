@@ -9,6 +9,7 @@ import (
 	"github.com/danisbagus/dockerize-golang/internal/handler"
 	"github.com/danisbagus/dockerize-golang/internal/repo"
 	"github.com/danisbagus/dockerize-golang/internal/usecase"
+	"github.com/spf13/viper"
 
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
@@ -17,6 +18,8 @@ import (
 )
 
 func main() {
+	InitializeViper()
+
 	mysqlClient := GetMysqlClient()
 
 	router := mux.NewRouter()
@@ -31,18 +34,19 @@ func main() {
 		w.Write([]byte("Hello world"))
 	})
 
-	appPort := ":8100"
-	fmt.Println("Starting the application at:", appPort)
-	log.Fatal(http.ListenAndServe(appPort, router))
+	appAdrr := fmt.Sprintf("%s:%s", viper.GetString("app.host"), viper.GetString("app.port"))
+
+	fmt.Println("Starting the application at:", appAdrr)
+	log.Fatal(http.ListenAndServe(appAdrr, router))
 
 }
 
 func GetMysqlClient() *sqlx.DB {
-	dbHost := "myappdb"
-	dbPort := "3306"
-	dbUser := "root"
-	dbPassword := "mypass"
-	dbName := "myapp"
+	dbHost := viper.GetString("db.host")
+	dbPort := viper.GetString("db.port")
+	dbUser := viper.GetString("db.user")
+	dbPassword := viper.GetString("db.password")
+	dbName := viper.GetString("db.name")
 
 	connection := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v", dbUser, dbPassword, dbHost, dbPort, dbName)
 	client, err := sqlx.Open("mysql", connection)
@@ -55,4 +59,14 @@ func GetMysqlClient() *sqlx.DB {
 	client.SetMaxIdleConns(10)
 
 	return client
+}
+
+func InitializeViper() {
+	viper.SetConfigName("config")
+	viper.AddConfigPath(".")
+	viper.AutomaticEnv()
+	viper.SetConfigType("yml")
+	if err := viper.ReadInConfig(); err != nil {
+		log.Fatal(fmt.Sprintf("Error while reading file %s", err))
+	}
 }
