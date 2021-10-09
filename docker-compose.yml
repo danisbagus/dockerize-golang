@@ -1,0 +1,41 @@
+
+  
+version: '3'
+services:
+  myapp:
+    build: .
+    image: golang-dockerizegolang
+    volumes:
+      - ./:/app
+    working_dir: /app
+    ports:
+      - 8100:8100
+    networks:
+      - dockerizegolang-net
+    command: go run cmd/main.go 
+  myappdb:
+    image: mysql:5.6.27
+    expose:
+      - 3306
+    volumes:
+      - mysqldockerizegolang:/var/lib/mysql
+      - ./resource/docker/initdb:/docker-entrypoint-initdb.d  
+    environment:
+      MYSQL_ROOT_PASSWORD: mypass
+      TZ: Asia/Jakarta
+    networks:
+      - dockerizegolang-net
+  myappdbweb:
+    image: adminer
+    restart: always
+    ports:
+      - 8102:8080
+    networks:
+      - dockerizegolang-net
+volumes:
+  mysqldockerizegolang:
+    driver: local
+
+networks:
+  dockerizegolang-net:
+    driver: bridge

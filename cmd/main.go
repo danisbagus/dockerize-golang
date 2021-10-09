@@ -27,15 +27,19 @@ func main() {
 
 	router.HandleFunc("/api/transactions", transactionHandler.GetAllTransaction).Methods(http.MethodGet)
 
-	appPort := "localhost:8100"
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Hello world"))
+	})
+
+	appPort := ":8100"
 	fmt.Println("Starting the application at:", appPort)
 	log.Fatal(http.ListenAndServe(appPort, router))
 
 }
 
 func GetMysqlClient() *sqlx.DB {
-	dbHost := "localhost"
-	dbPort := "8101"
+	dbHost := "myappdb"
+	dbPort := "3306"
 	dbUser := "root"
 	dbPassword := "mypass"
 	dbName := "myapp"
